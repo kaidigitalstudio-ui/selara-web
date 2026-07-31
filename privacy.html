@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — Selara</title>
+  <meta name="description" content="Selara Privacy Policy." />
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:   #2E6F8E;
+      --ink:    #15212B;
+      --paper:  #FBFBFA;
+      --citron: #D6E04A;
+      --soft:   #7F8E98;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--blue);
+      color: var(--paper);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 28px 48px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .nav-logo svg { width: 36px; height: 36px; }
+
+    .nav-wordmark {
+      font-family: 'Anton', sans-serif;
+      font-size: 22px;
+      letter-spacing: 1.5px;
+      color: var(--paper);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: var(--paper);
+      opacity: 0.7;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    .nav-links a:hover { opacity: 1; }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      z-index: 101;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--paper);
+      border-radius: 2px;
+      transition: transform 0.25s, opacity 0.25s;
+    }
+
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--ink);
+      z-index: 99;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+    }
+
+    .mobile-menu.open { display: flex; }
+
+    .mobile-menu a {
+      font-family: 'Anton', sans-serif;
+      font-size: 36px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--paper);
+      text-decoration: none;
+      opacity: 0.85;
+      transition: opacity 0.2s;
+    }
+
+    .mobile-menu a:hover { opacity: 1; }
+
+    .page {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 80px 48px 120px;
+    }
+
+    .page-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--citron);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .page-headline {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(44px, 6vw, 64px);
+      line-height: 1.05;
+      text-transform: uppercase;
+      color: var(--paper);
+      margin-bottom: 12px;
+    }
+
+    .page-headline span { color: var(--citron); }
+
+    .page-updated {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(251,251,250,0.45);
+      margin-bottom: 56px;
+    }
+
+    .section {
+      margin-bottom: 40px;
+    }
+
+    .section-title {
+      font-family: 'Anton', sans-serif;
+      font-size: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--paper);
+      margin-bottom: 14px;
+    }
+
+    .section p {
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 1.75;
+      color: rgba(251,251,250,0.7);
+      margin-bottom: 12px;
+    }
+
+    .section ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .section ul li {
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 1.65;
+      color: rgba(251,251,250,0.7);
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .section ul li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--citron);
+      font-weight: 700;
+    }
+
+    a.email-link {
+      color: var(--citron);
+      text-decoration: none;
+    }
+
+    a.email-link:hover { text-decoration: underline; }
+
+    footer {
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 32px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1100px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-copy {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(251,251,250,0.4);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(251,251,250,0.5);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--paper); }
+
+    @media (max-width: 768px) {
+      nav { padding: 20px 24px; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .page { padding: 48px 24px 80px; }
+      footer { padding: 24px; flex-direction: column; align-items: center; text-align: center; }
+      .footer-links { flex-wrap: wrap; justify-content: center; gap: 12px 20px; }
+    }
+
+    @media (max-width: 400px) {
+      .page-headline { font-size: 44px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="/#features">Features</a>
+    <a href="/support.html">Support</a>
+  </div>
+
+  <nav>
+    <a class="nav-logo" href="/">
+      <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <line x1="100" y1="28" x2="100" y2="172" stroke="#D6E04A" stroke-width="17" stroke-linecap="round"/>
+        <line x1="162" y1="64" x2="38"  y2="136" stroke="#D6E04A" stroke-width="17" stroke-linecap="round"/>
+        <line x1="38"  y1="64" x2="162" y2="136" stroke="#D6E04A" stroke-width="17" stroke-linecap="round"/>
+        <line x1="100" y1="58" x2="100" y2="142" stroke="#2E6F8E" stroke-width="10" stroke-linecap="round"/>
+        <line x1="136" y1="79" x2="64"  y2="121" stroke="#2E6F8E" stroke-width="10" stroke-linecap="round"/>
+        <line x1="64"  y1="79" x2="136" y2="121" stroke="#2E6F8E" stroke-width="10" stroke-linecap="round"/>
+      </svg>
+      <span class="nav-wordmark">SELARA</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="/#features">Features</a></li>
+      <li><a href="/support.html">Support</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <script>
+    function toggleMenu() {
+      document.getElementById('mobileMenu').classList.toggle('open');
+      document.getElementById('hamburger').classList.toggle('open');
+    }
+  </script>
+
+  <div class="page">
+    <p class="page-label">Legal</p>
+    <h1 class="page-headline">Privacy<br>Policy<span>.</span></h1>
+    <p class="page-updated">Last updated: July 2, 2026</p>
+
+    <div class="section">
+      <p>Selara is a prayer journal app developed by Kai Digital Studio. This Privacy Policy explains how we collect, use, and protect your information.</p>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">Information We Collect</h2>
+      <ul>
+        <li>Account information: your email address and display name when you create an account</li>
+        <li>Prayer and journal content: entries, prayers, and reflections you create within the app</li>
+        <li>Circle data: prayer circles you create and the members you invite</li>
+        <li>Notification preferences: your reminder settings and notification token</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">How We Use Your Information</h2>
+      <p>We use your information solely to provide the Selara app experience — storing your journal entries, enabling prayer circles with people you invite, and sending prayer reminders you request. We do not sell, share, or use your data for advertising.</p>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">Encryption</h2>
+      <p><strong style="color:var(--paper)">Personal prayer journal:</strong> Your private prayer content — including prayer text, journal reflections, answered prayer notes, and the names of people you pray for — is encrypted on your device before it is stored. We use AES-256 encryption with a key derived from your password. This means that even Kai Digital Studio cannot read your personal prayer content. Your encryption key is never transmitted to our servers in a form we can access. Please note: if you lose access to your account and cannot remember your password, your encrypted content may be unrecoverable.</p>
+      <p><strong style="color:var(--paper)">Prayer circles:</strong> Content shared in Prayer Circles is also encrypted at rest using AES-256 before being stored. Circle prayers are readable by all members of the circle — that is the intended design. Because circle content uses a shared app-level key rather than a key derived from your personal password, it does not carry the same "zero knowledge" guarantee as your private journal.</p>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">Third-Party Services</h2>
+      <p>Selara uses the following third-party services:</p>
+      <ul>
+        <li>Supabase — database and authentication (data stored in the United States). Your prayer content is stored encrypted and cannot be read by Supabase or by us.</li>
+        <li>Expo — push notification delivery</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">Data Retention</h2>
+      <p>Your data is retained as long as your account is active. You may delete your account and all associated data at any time from within the app.</p>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">Children's Privacy</h2>
+      <p>Selara is not directed at children under 13. We do not knowingly collect information from children under 13.</p>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">Changes to This Policy</h2>
+      <p>We may update this policy from time to time. Continued use of the app after changes constitutes acceptance of the updated policy.</p>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">Contact</h2>
+      <p>Questions? Email us at <a class="email-link" href="mailto:kai.digital.studio@gmail.com">kai.digital.studio@gmail.com</a>.</p>
+    </div>
+  </div>
+
+  <footer>
+    <p class="footer-copy">© 2026 Selara. All rights reserved.</p>
+    <ul class="footer-links">
+      <li><a href="/support.html">Support</a></li>
+      <li><a href="/terms.html">Terms of Service</a></li>
+      <li><a href="/privacy.html">Privacy Policy</a></li>
+    </ul>
+  </footer>
+
+</body>
+</html>

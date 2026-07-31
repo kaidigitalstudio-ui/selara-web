@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Selara — Prayer Journal</title>
+  <meta name="description" content="A prayer journal built for remembering what God has done." />
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:    #2E6F8E;
+      --ink:     #15212B;
+      --paper:   #FBFBFA;
+      --citron:  #D6E04A;
+      --soft:    #7F8E98;
+      --mist:    #B7C9D2;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--blue);
+      color: var(--paper);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Nav ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 28px 48px;
+      position: relative;
+      z-index: 100;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .nav-logo svg {
+      width: 36px;
+      height: 36px;
+    }
+
+    .nav-wordmark {
+      font-family: 'Anton', sans-serif;
+      font-size: 22px;
+      letter-spacing: 1.5px;
+      color: var(--paper);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: var(--paper);
+      opacity: 0.7;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    .nav-links a:hover { opacity: 1; }
+
+    /* ── Hamburger ── */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      z-index: 101;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--paper);
+      border-radius: 2px;
+      transition: transform 0.25s, opacity 0.25s;
+    }
+
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--ink);
+      z-index: 99;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+    }
+
+    .mobile-menu.open { display: flex; }
+
+    .mobile-menu a {
+      font-family: 'Anton', sans-serif;
+      font-size: 36px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--paper);
+      text-decoration: none;
+      opacity: 0.85;
+      transition: opacity 0.2s;
+    }
+
+    .mobile-menu a:hover { opacity: 1; }
+
+    /* ── Hero ── */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 64px;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 80px 48px 120px;
+    }
+
+    .hero-left { display: flex; flex-direction: column; gap: 28px; }
+
+    .hero-tagline {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--citron);
+      text-transform: uppercase;
+    }
+
+    .hero-headline {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(52px, 6vw, 80px);
+      line-height: 1.05;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--paper);
+    }
+
+    .hero-headline span { color: var(--citron); }
+
+    .hero-body {
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 1.7;
+      color: rgba(251, 251, 250, 0.75);
+      max-width: 420px;
+    }
+
+    .hero-cta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--citron);
+      color: var(--ink);
+      font-family: 'Anton', sans-serif;
+      font-size: 18px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 16px 28px;
+      border-radius: 16px;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    .coming-soon {
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(251, 251, 250, 0.5);
+      letter-spacing: 0.3px;
+    }
+
+    /* ── Phone mockup ── */
+    .hero-right {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+    }
+
+    .phone-wrap {
+      position: relative;
+      width: 280px;
+    }
+
+    .phone-frame {
+      width: 280px;
+      aspect-ratio: 9/19.5;
+      background: var(--ink);
+      border-radius: 44px;
+      border: 3px solid rgba(255,255,255,0.12);
+      overflow: hidden;
+      box-shadow:
+        0 40px 80px rgba(0,0,0,0.35),
+        0 0 0 1px rgba(0,0,0,0.2);
+      position: relative;
+    }
+
+    .phone-notch {
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 28px;
+      background: var(--ink);
+      border-radius: 20px;
+      z-index: 2;
+    }
+
+    .phone-screen {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
+      display: block;
+    }
+
+    .phone-screen-placeholder {
+      width: 100%;
+      height: 100%;
+      background: var(--paper);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--soft);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* ── Features strip ── */
+    .features {
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 64px 48px;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 48px;
+    }
+
+    .feature-item { display: flex; flex-direction: column; gap: 12px; }
+
+    .feature-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--citron);
+    }
+
+    .feature-title {
+      font-family: 'Anton', sans-serif;
+      font-size: 26px;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      color: var(--paper);
+    }
+
+    .feature-body {
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 1.65;
+      color: rgba(251, 251, 250, 0.65);
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 32px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1100px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-copy {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(251, 251, 250, 0.4);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(251, 251, 250, 0.5);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--paper); }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      nav { padding: 20px 24px; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 48px 24px 80px;
+        gap: 48px;
+        text-align: center;
+      }
+
+      .hero-body { max-width: 100%; font-size: 16px; }
+      .hero-cta { justify-content: center; flex-direction: column; align-items: center; }
+      .btn-primary { width: 100%; justify-content: center; }
+      .hero-right { order: -1; }
+      .phone-wrap { width: 200px; }
+      .phone-frame { width: 200px; }
+
+      .features {
+        grid-template-columns: 1fr;
+        padding: 48px 24px;
+        gap: 36px;
+      }
+
+      footer {
+        padding: 24px;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .footer-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px 20px;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .hero-headline { font-size: 44px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Mobile menu ── -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#features" onclick="closeMenu()">Features</a>
+    <a href="/support.html">Support</a>
+  </div>
+
+  <!-- ── Nav ── -->
+  <nav>
+    <a class="nav-logo" href="#">
+      <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Outer citron arms -->
+        <line x1="100" y1="28" x2="100" y2="172" stroke="#D6E04A" stroke-width="17" stroke-linecap="round"/>
+        <line x1="162" y1="64" x2="38"  y2="136" stroke="#D6E04A" stroke-width="17" stroke-linecap="round"/>
+        <line x1="38"  y1="64" x2="162" y2="136" stroke="#D6E04A" stroke-width="17" stroke-linecap="round"/>
+        <!-- Inner blue arms — blends with background to create hollow double-stroke effect -->
+        <line x1="100" y1="58" x2="100" y2="142" stroke="#2E6F8E" stroke-width="10" stroke-linecap="round"/>
+        <line x1="136" y1="79" x2="64"  y2="121" stroke="#2E6F8E" stroke-width="10" stroke-linecap="round"/>
+        <line x1="64"  y1="79" x2="136" y2="121" stroke="#2E6F8E" stroke-width="10" stroke-linecap="round"/>
+      </svg>
+      <span class="nav-wordmark">SELARA</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="/support.html">Support</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('mobileMenu');
+      const btn = document.getElementById('hamburger');
+      menu.classList.toggle('open');
+      btn.classList.toggle('open');
+    }
+    function closeMenu() {
+      document.getElementById('mobileMenu').classList.remove('open');
+      document.getElementById('hamburger').classList.remove('open');
+    }
+  </script>
+
+  <!-- ── Hero ── -->
+  <section class="hero">
+    <div class="hero-left">
+      <p class="hero-tagline">Selah. Be still.</p>
+      <h1 class="hero-headline">
+        A place to pause<br>in God's<br>presence<span style="color:var(--citron)">.</span>
+      </h1>
+      <p class="hero-body">
+        Selara is a prayer journal built for remembering — bring everything to God and look back on every answer.
+      </p>
+      <div class="hero-cta">
+        <a class="btn-primary" href="#">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z"/>
+            <path d="M8 12l4 4 4-4M12 8v8"/>
+          </svg>
+          Download on iOS
+        </a>
+        <span class="coming-soon">Coming soon to the App Store</span>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="phone-wrap">
+        <div class="phone-frame">
+          <div class="phone-notch"></div>
+          <img class="phone-screen" src="screenshot.png" alt="Selara app screenshot" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Features ── -->
+  <section class="features" id="features">
+    <div class="feature-item">
+      <span class="feature-label">Pray</span>
+      <h3 class="feature-title">Bring everything.</h3>
+      <p class="feature-body">Log prayer requests by category — family, health, guidance, gratitude, and more. Add notes, scripture, and who you're praying for.</p>
+    </div>
+    <div class="feature-item">
+      <span class="feature-label">Journal</span>
+      <h3 class="feature-title">Reflect deeply.</h3>
+      <p class="feature-body">Speak your heart and let Selara help you shape it into a journal entry. Your words, your prayers, your story with God.</p>
+    </div>
+    <div class="feature-item">
+      <span class="feature-label">Remember</span>
+      <h3 class="feature-title">See what He's done.</h3>
+      <p class="feature-body">Mark prayers as answered and look back on what God has done. Faith grows when you remember.</p>
+    </div>
+    <div class="feature-item">
+      <span class="feature-label">Make it yours</span>
+      <h3 class="feature-title">Pick your palette.</h3>
+      <p class="feature-body">Choose from six color themes to dress Selara in a palette that fits your personality. Your journal, your look.</p>
+    </div>
+    <div class="feature-item">
+      <span class="feature-label">Circles</span>
+      <h3 class="feature-title">Pray together.</h3>
+      <p class="feature-body">Create a Circle to pray alongside friends, family, or your small group. Share requests and carry each other's burdens.</p>
+    </div>
+    <div class="feature-item">
+      <span class="feature-label">AI-assisted</span>
+      <h3 class="feature-title">Just speak it.</h3>
+      <p class="feature-body">Dictate your prayers out loud and let Selara's AI shape them into a journal entry — your words, your heart, no typing required.</p>
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <p class="footer-copy">© 2026 Selara. All rights reserved.</p>
+    <ul class="footer-links">
+      <li><a href="/support.html">Support</a></li>
+      <li><a href="/terms.html">Terms of Service</a></li>
+      <li><a href="/privacy.html">Privacy Policy</a></li>
+    </ul>
+  </footer>
+
+</body>
+</html>

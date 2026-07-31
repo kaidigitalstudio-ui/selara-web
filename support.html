@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Support — Selara</title>
+  <meta name="description" content="Get help with Selara — Prayer Journal." />
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:    #2E6F8E;
+      --ink:     #15212B;
+      --paper:   #FBFBFA;
+      --citron:  #D6E04A;
+      --soft:    #7F8E98;
+      --mist:    #B7C9D2;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--blue);
+      color: var(--paper);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Nav ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 28px 48px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .nav-logo svg { width: 36px; height: 36px; }
+
+    .nav-wordmark {
+      font-family: 'Anton', sans-serif;
+      font-size: 22px;
+      letter-spacing: 1.5px;
+      color: var(--paper);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: var(--paper);
+      opacity: 0.7;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    .nav-links a:hover { opacity: 1; }
+
+    /* ── Hamburger ── */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      z-index: 101;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--paper);
+      border-radius: 2px;
+      transition: transform 0.25s, opacity 0.25s;
+    }
+
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--ink);
+      z-index: 99;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+    }
+
+    .mobile-menu.open { display: flex; }
+
+    .mobile-menu a {
+      font-family: 'Anton', sans-serif;
+      font-size: 36px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--paper);
+      text-decoration: none;
+      opacity: 0.85;
+      transition: opacity 0.2s;
+    }
+
+    .mobile-menu a:hover { opacity: 1; }
+
+    /* ── Content ── */
+    .page {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 80px 48px 120px;
+    }
+
+    .page-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--citron);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .page-headline {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(44px, 6vw, 64px);
+      line-height: 1.05;
+      text-transform: uppercase;
+      color: var(--paper);
+      margin-bottom: 24px;
+    }
+
+    .page-headline span { color: var(--citron); }
+
+    .page-body {
+      font-size: 17px;
+      font-weight: 500;
+      line-height: 1.7;
+      color: rgba(251, 251, 250, 0.75);
+      margin-bottom: 48px;
+    }
+
+    /* ── Cards ── */
+    .cards {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 56px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      padding: 28px 32px;
+    }
+
+    .card-title {
+      font-family: 'Anton', sans-serif;
+      font-size: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--paper);
+      margin-bottom: 10px;
+    }
+
+    .card-body {
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 1.65;
+      color: rgba(251, 251, 250, 0.65);
+    }
+
+    /* ── Email CTA ── */
+    .contact-block {
+      background: rgba(214, 224, 74, 0.1);
+      border: 1px solid rgba(214, 224, 74, 0.3);
+      border-radius: 20px;
+      padding: 36px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .contact-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--citron);
+    }
+
+    .contact-title {
+      font-family: 'Anton', sans-serif;
+      font-size: 28px;
+      text-transform: uppercase;
+      color: var(--paper);
+    }
+
+    .contact-body {
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 1.65;
+      color: rgba(251, 251, 250, 0.7);
+    }
+
+    .contact-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--citron);
+      color: var(--ink);
+      font-family: 'Anton', sans-serif;
+      font-size: 17px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 14px 24px;
+      border-radius: 14px;
+      text-decoration: none;
+      align-self: flex-start;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+
+    .contact-link:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 32px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1100px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-copy {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(251, 251, 250, 0.4);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(251, 251, 250, 0.5);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--paper); }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      nav { padding: 20px 24px; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .page { padding: 48px 24px 80px; }
+      .card { padding: 22px 20px; }
+      .contact-block { padding: 28px 20px; }
+      .contact-link { width: 100%; justify-content: center; }
+      footer { padding: 24px; flex-direction: column; align-items: center; text-align: center; }
+      .footer-links { flex-wrap: wrap; justify-content: center; gap: 12px 20px; }
+    }
+
+    @media (max-width: 400px) {
+      .page-headline { font-size: 44px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ── -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="/#features">Features</a>
+    <a href="/support.html">Support</a>
+  </div>
+
+  <nav>
+    <a class="nav-logo" href="/">
+      <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <line x1="100" y1="28" x2="100" y2="172" stroke="#D6E04A" stroke-width="17" stroke-linecap="round"/>
+        <line x1="162" y1="64" x2="38"  y2="136" stroke="#D6E04A" stroke-width="17" stroke-linecap="round"/>
+        <line x1="38"  y1="64" x2="162" y2="136" stroke="#D6E04A" stroke-width="17" stroke-linecap="round"/>
+        <line x1="100" y1="58" x2="100" y2="142" stroke="#2E6F8E" stroke-width="10" stroke-linecap="round"/>
+        <line x1="136" y1="79" x2="64"  y2="121" stroke="#2E6F8E" stroke-width="10" stroke-linecap="round"/>
+        <line x1="64"  y1="79" x2="136" y2="121" stroke="#2E6F8E" stroke-width="10" stroke-linecap="round"/>
+      </svg>
+      <span class="nav-wordmark">SELARA</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="/#features">Features</a></li>
+      <li><a href="/support.html">Support</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <script>
+    function toggleMenu() {
+      document.getElementById('mobileMenu').classList.toggle('open');
+      document.getElementById('hamburger').classList.toggle('open');
+    }
+  </script>
+
+  <!-- ── Content ── -->
+  <div class="page">
+    <p class="page-label">Help & Support</p>
+    <h1 class="page-headline">We're here<br>to help<span>.</span></h1>
+    <p class="page-body">
+      Have a question about Selara? Run into an issue? We'd love to hear from you.
+    </p>
+
+    <div class="cards">
+      <div class="card">
+        <p class="card-title">Account & Sign In</p>
+        <p class="card-body">If you're having trouble signing in, use the "Forgot password?" link on the sign-in screen to reset your password via email.</p>
+      </div>
+      <div class="card">
+        <p class="card-title">Prayer Circles</p>
+        <p class="card-body">To invite someone to a Circle, open the circle and tap the share icon in the top right. Send them the invite link — they'll need a Selara account to join.</p>
+      </div>
+      <div class="card">
+        <p class="card-title">Data & Privacy</p>
+        <p class="card-body">Your personal prayers are encrypted on your device before being stored. No one — including us — can read your private prayer journal. Content shared in Prayer Circles is also encrypted at rest and is readable only by circle members.</p>
+      </div>
+      <div class="card">
+        <p class="card-title">Delete Your Account</p>
+        <p class="card-body">To permanently delete your account and all data, go to the Profile tab in the app and tap "Delete Account" at the bottom of the page.</p>
+      </div>
+    </div>
+
+    <div class="contact-block">
+      <p class="contact-label">Still need help?</p>
+      <p class="contact-title">Send us a message.</p>
+      <p class="contact-body">We typically respond within 1–2 business days.</p>
+      <a class="contact-link" href="mailto:kai.digital.studio@gmail.com">Email Support</a>
+      <p class="contact-body" style="margin-top: 4px;">or email <strong>kai.digital.studio@gmail.com</strong></p>
+    </div>
+  </div>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <p class="footer-copy">© 2026 Selara. All rights reserved.</p>
+    <ul class="footer-links">
+      <li><a href="/support.html">Support</a></li>
+      <li><a href="/terms.html">Terms of Service</a></li>
+      <li><a href="/privacy.html">Privacy Policy</a></li>
+    </ul>
+  </footer>
+
+</body>
+</html>
