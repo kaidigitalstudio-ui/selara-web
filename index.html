@@ -18,6 +18,19 @@
 
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
+  <script>
+    /* Intro: once per visit (add ?intro to replay), skipped for reduced motion */
+    (function () {
+      var d = document.documentElement, force = location.search.indexOf('intro') !== -1, seen = false;
+      try { seen = sessionStorage.getItem('selara-intro') === '1'; } catch (e) {}
+      var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (force || (!seen && !still)) {
+        d.classList.add('intro');
+        window.__introFailsafe = setTimeout(function () { d.classList.remove('intro', 'intro-out'); }, 8000);
+      }
+    })();
+  </script>
+
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -389,9 +402,126 @@
     @media (max-width: 400px) {
       .hero-headline { font-size: 44px; }
     }
+
+    /* ── Intro: the star breathes in, then the page opens out through it ── */
+    .intro-veil { display: none; }
+    html.intro body { overflow: hidden; }
+    html.intro .intro-veil {
+      display: flex;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 34px;
+      background: var(--blue);
+      transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1) 0.35s;
+    }
+    /* Separate wrapper so the exhale starts from wherever the breath ended (no snap back) */
+    .intro-exit {
+      transition: transform 2s cubic-bezier(0.45, 0, 0.25, 1);
+      will-change: transform;
+    }
+    .intro-star {
+      position: relative;
+      width: 132px;
+      height: 132px;
+      transform: scale(0.82);
+      animation: intro-breathe 2.4s cubic-bezier(0.45, 0, 0.25, 1) 0.25s forwards;
+    }
+    .intro-star svg { position: relative; width: 100%; height: 100%; overflow: visible; }
+    .intro-glow {
+      position: absolute;
+      inset: -70%;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(214, 224, 74, 0.32) 0%, rgba(214, 224, 74, 0) 62%);
+      opacity: 0;
+      animation: intro-glow 2.4s ease-in-out 0.25s forwards;
+    }
+    .intro-star .arm {
+      stroke-dasharray: 150;
+      stroke-dashoffset: 150;
+      animation: intro-draw 0.9s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+    }
+    .intro-star .arm:nth-child(2) { animation-delay: 0.12s; }
+    .intro-star .arm:nth-child(3) { animation-delay: 0.24s; }
+    .intro-word {
+      font-family: 'Anton', sans-serif;
+      font-size: 15px;
+      letter-spacing: 6px;
+      text-indent: 6px;
+      color: var(--citron);
+      opacity: 0;
+      transform: translateY(6px);
+      animation: intro-word 0.9s ease 1s forwards;
+    }
+    .intro-skip {
+      position: absolute;
+      right: 24px;
+      bottom: 24px;
+      background: none;
+      border: none;
+      color: var(--paper);
+      opacity: 0.55;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      padding: 8px;
+    }
+    .intro-skip:hover, .intro-skip:focus-visible { opacity: 1; }
+
+    /* Exhale: the star swells past the screen while the veil lifts */
+    html.intro-out .intro-veil { opacity: 0; pointer-events: none; }
+    html.intro-out .intro-exit { transform: scale(5); }
+    html.intro-out .intro-word { opacity: 0; transform: translateY(-4px); transition: opacity 0.35s ease, transform 0.35s ease; }
+    html.intro-out .hero-left > *, html.intro-out .hero-right {
+      animation: intro-rise 1.3s cubic-bezier(0.2, 0.7, 0.2, 1) 0.5s both;
+    }
+    html.intro-out .hero-left > :nth-child(2) { animation-delay: 0.6s; }
+    html.intro-out .hero-left > :nth-child(3) { animation-delay: 0.7s; }
+    html.intro-out .hero-left > :nth-child(4) { animation-delay: 0.8s; }
+    html.intro-out .hero-right { animation-delay: 0.65s; }
+
+    @keyframes intro-draw    { to { stroke-dashoffset: 0; } }
+    @keyframes intro-breathe { to { transform: scale(1.06); } }
+    @keyframes intro-glow    { 0% { opacity: 0; } 70% { opacity: 1; } 100% { opacity: 0.85; } }
+    @keyframes intro-word    { to { opacity: 0.95; transform: none; } }
+    @keyframes intro-rise    { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+
+    @media (prefers-reduced-motion: reduce) {
+      html.intro .intro-veil { display: none; }
+      html.intro body { overflow: auto; }
+    }
   </style>
 </head>
 <body>
+
+  <!-- ── Intro (only shown while <html> has .intro) ── -->
+  <div class="intro-veil" role="presentation">
+    <div class="intro-exit" aria-hidden="true">
+    <div class="intro-star">
+      <div class="intro-glow"></div>
+      <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g>
+          <line class="arm" x1="100" y1="28" x2="100" y2="172" stroke="#D6E04A" stroke-width="17" stroke-linecap="round"/>
+          <line class="arm" x1="162" y1="64" x2="38"  y2="136" stroke="#D6E04A" stroke-width="17" stroke-linecap="round"/>
+          <line class="arm" x1="38"  y1="64" x2="162" y2="136" stroke="#D6E04A" stroke-width="17" stroke-linecap="round"/>
+        </g>
+        <g>
+          <line class="arm" x1="100" y1="58" x2="100" y2="142" stroke="#2E6F8E" stroke-width="10" stroke-linecap="round"/>
+          <line class="arm" x1="136" y1="79" x2="64"  y2="121" stroke="#2E6F8E" stroke-width="10" stroke-linecap="round"/>
+          <line class="arm" x1="64"  y1="79" x2="136" y2="121" stroke="#2E6F8E" stroke-width="10" stroke-linecap="round"/>
+        </g>
+      </svg>
+    </div>
+    </div>
+    <p class="intro-word" aria-hidden="true">SELAH. BE STILL.</p>
+    <button class="intro-skip" type="button">Skip</button>
+  </div>
 
   <!-- ── Mobile menu ── -->
   <div class="mobile-menu" id="mobileMenu">
@@ -447,14 +577,13 @@
         Selara is a prayer journal built for remembering — bring everything to God and look back on every answer.
       </p>
       <div class="hero-cta">
-        <a class="btn-primary" href="#">
+        <a class="btn-primary" href="https://apps.apple.com/us/app/selara-prayer-reflection/id6784023416" target="_blank" rel="noopener noreferrer">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z"/>
             <path d="M8 12l4 4 4-4M12 8v8"/>
           </svg>
           Download on iOS
         </a>
-        <span class="coming-soon">Coming soon to the App Store</span>
       </div>
     </div>
 
@@ -512,5 +641,28 @@
     </ul>
   </footer>
 
+  <script>
+    /* Intro timing: breathe in (~2.2s), hold, then open out through the star */
+    (function () {
+      var root = document.documentElement;
+      if (!root.classList.contains('intro')) return;
+      clearTimeout(window.__introFailsafe);
+      var veil = document.querySelector('.intro-veil');
+      var done = false;
+      function finish() {
+        if (done) return;
+        done = true;
+        try { sessionStorage.setItem('selara-intro', '1'); } catch (e) {}
+        root.classList.add('intro-out');
+        setTimeout(function () {
+          root.classList.remove('intro', 'intro-out');
+          if (veil) veil.remove();
+        }, 2200);
+      }
+      document.querySelector('.intro-skip').addEventListener('click', finish);
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') finish(); });
+      setTimeout(finish, 3000);
+    })();
+  </script>
 </body>
 </html>
