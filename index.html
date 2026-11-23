@@ -44,7 +44,7 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Newsreader:ital,wght@1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -455,6 +455,152 @@
       font-size: 13px; font-weight: 700; letter-spacing: 6px; text-transform: uppercase; color: var(--paper);
       opacity: 0; transition: opacity 0.6s ease;
     }
+
+    /* Hero without its phone: one column */
+    .hero { grid-template-columns: 1fr; padding-bottom: 72px; }
+    .hero-left { max-width: 760px; }
+
+    /* ── Features: pinned list + phone ── */
+    .features.fl { display: block; max-width: none; padding: 0; border-top: 1px solid rgba(255,255,255,0.1); position: relative; }
+    .fl-pin {
+      position: sticky; top: 0; height: 100vh; overflow: hidden;
+      display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 80px;
+      max-width: 1100px; margin: 0 auto; padding: 0 48px;
+    }
+    .fl-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .fl-item { padding: 10px 0 10px 24px; border-left: 3px solid rgba(251,251,250,0.14); cursor: pointer; opacity: 0.38; transition: opacity .4s ease, border-color .4s ease; }
+    .fl-item:hover { opacity: 0.7; }
+    .fl-item .feature-label { display: none; }
+    .fl-item .feature-title { font-size: clamp(22px, 2.3vw, 30px); line-height: 1.1; }
+    .fl-item .feature-body { font-size: 16px; max-width: 460px; max-height: 0; overflow: hidden; opacity: 0; transition: max-height .5s ease, opacity .4s ease, margin .5s ease; }
+    .fl-item.on { opacity: 1; border-left-color: var(--citron); }
+    .fl-item.on .feature-label { display: block; margin-bottom: 6px; }
+    .fl-item.on .feature-body { max-height: 140px; opacity: 1; margin-top: 10px; }
+    .fl-dots { display: none; }
+
+    /* The phone: iPhone 17 Pro proportions, titanium edge, side buttons; straight on */
+    .dev-wrap { perspective: 1800px; }
+    .dev { position: relative; transform-style: preserve-3d; transform: none; }
+    .dev-rim {
+      position: relative; padding: var(--rim); border-radius: var(--r0);
+      background: linear-gradient(135deg, #d9dce0 0%, #8a8f96 22%, #e8eaed 48%, #6f747b 74%, #b9bdc2 100%);
+      box-shadow: 0 60px 90px -30px rgba(8,22,34,0.6), 0 24px 40px -18px rgba(8,22,34,0.45);
+    }
+    .dev-bezel { padding: var(--bez); border-radius: var(--r1); background: #0b0c0f; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06); }
+    .dev-screen { position: relative; width: var(--sw); height: var(--sh); border-radius: var(--r2); overflow: hidden; background: #FBFBFA; }
+    .fl .app .scr { opacity: 0; transition: opacity .35s ease; }
+    .fl .app .scr.on { opacity: 1; }
+    .dev-glare { position: absolute; inset: 0; z-index: 60; pointer-events: none; background: linear-gradient(118deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.05) 28%, rgba(255,255,255,0) 42%); }
+    .dev-back { position: absolute; inset: 0; border-radius: var(--r0); background: linear-gradient(90deg, #5c6168, #3c4046 60%, #2a2d31); transform: translateZ(-16px); }
+    .dev-btn { position: absolute; width: 4px; border-radius: 2px; background: linear-gradient(90deg, #6f747b, #c4c8cd); transform: translateZ(-8px); }
+    .dev-btn.b1 { left: -3px; top: 17%; height: 4.5%; }
+    .dev-btn.b2 { left: -3px; top: 24%; height: 8%; }
+    .dev-btn.b3 { left: -3px; top: 34%; height: 8%; }
+    .dev-btn.b4 { right: -3px; top: 27%; height: 12%; }
+    .dev-btn.b5 { right: -3px; top: 58%; height: 7%; }
+    /* App screens, laid out in iPhone points (402 x 875) and scaled to the phone */
+    .app { --paper:#FBFBFA; --ink:#15212B; --primary:#2E6F8E; --deep:#256079; --soft:#7F8E98;
+      position: absolute; left: 0; top: 0; width: 402px; height: 875px; transform-origin: 0 0; color: var(--ink); font-family: 'Space Grotesk', sans-serif; }
+    .app .scr { position: absolute; inset: 0; background: var(--paper); overflow: hidden; }
+    .app .chrome { position: absolute; inset: 0; pointer-events: none; z-index: 50; }
+    .app .chrome .time { position: absolute; left: 52px; top: 17px; font-size: 17px; font-weight: 600; }
+    .app .chrome .island { position: absolute; top: 11px; left: 139px; width: 124px; height: 37px; border-radius: 19px; background: #000; }
+    .app .chrome .icons { position: absolute; right: 30px; top: 20px; display: flex; gap: 6px; }
+    .app .pad { padding: 0 24px; }
+    .app .anton, .app .hl, .app .logo, .app .bigbtn, .app .obtn { font-family: 'Anton', sans-serif; text-transform: uppercase; font-weight: 400; }
+    .app .logo { font-size: 26px; display: flex; align-items: center; gap: 6px; }
+    .app .kick { font-size: 12px; font-weight: 700; letter-spacing: 3px; color: var(--soft); }
+    .app .hl { font-size: 58px; line-height: 56px; margin-top: 6px; }
+    .app .hl b, .app .stitle b { color: var(--primary); font-weight: 400; }
+    .app .vcard { background: #D6E04A; border-radius: 26px; padding: 22px 24px; margin-top: 26px; }
+    .app .vt { font-family: 'Newsreader', serif; font-style: italic; font-size: 16px; line-height: 24px; }
+    .app .rowlab { display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; letter-spacing: 3px; color: var(--soft); margin: 24px 2px 12px; }
+    .app .mcard { flex: 1; background: #B7C9D2; border-radius: 22px; padding: 18px 16px; min-height: 160px; }
+    .app .mt { font-size: 15px; font-weight: 600; line-height: 21px; margin-top: 10px; }
+    .app .for { font-size: 12px; color: #15212B80; margin-top: 10px; font-weight: 600; }
+    .app .bigbtn { display: flex; align-items: center; justify-content: space-between; background: var(--primary); color: #fff; border-radius: 22px; padding: 16px 22px; font-size: 22px; margin-top: 18px; }
+    .app .obtn { border: 2px solid var(--ink); border-radius: 18px; padding: 14px 18px; font-size: 18px; }
+    .app .lab { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--soft); margin: 18px 0 9px; }
+    .app .body { font-size: 15px; font-weight: 500; line-height: 22px; }
+    .app .field { border: 2px solid #15212B24; background: #15212B0A; border-radius: 14px; padding: 14px; font-size: 15px; line-height: 23px; font-weight: 500; margin-top: 14px; overflow: hidden; }
+    .app .chips { display: flex; flex-wrap: wrap; gap: 7px; }
+    .app .chips span { border: 1.5px solid #15212B30; border-radius: 99px; padding: 6px 12px; font-size: 13px; font-weight: 600; height: 32px; display: inline-flex; align-items: center; }
+    .app .chips span.on { background: var(--primary); border-color: var(--primary); color: #fff; }
+    .app .ref { font-size: 11px; font-weight: 700; letter-spacing: .5px; color: var(--deep); margin-bottom: 4px; }
+    .app .toggle { display: flex; justify-content: space-between; align-items: center; border: 2px solid var(--ink); border-radius: 18px; padding: 12px 16px; margin-top: 16px; font-weight: 600; font-size: 15px; }
+    .app .toggle i { width: 46px; height: 28px; border-radius: 14px; background: var(--primary); position: relative; }
+    .app .toggle i::after { content: ''; position: absolute; right: 3px; top: 3px; width: 22px; height: 22px; border-radius: 50%; background: #fff; }
+    .app .praise { display: flex; align-items: center; gap: 10px; background: #D6E04A; border-radius: 14px; padding: 12px 14px; font-size: 14px; font-weight: 600; }
+    .app .pcard { border: 1.5px solid #15212B2E; background: #15212B06; border-radius: 14px; padding: 13px 14px; margin-bottom: 8px; }
+    .app .pt { display: flex; gap: 10px; font-size: 15px; font-weight: 600; line-height: 22px; }
+    .app .pt i { width: 8px; height: 8px; border-radius: 4px; background: var(--primary); margin-top: 7px; flex: none; }
+    .app .meta { display: flex; align-items: center; gap: 8px; margin: 8px 0 0 18px; }
+    .app .chip { background: #D6E04A; border-radius: 99px; padding: 3px 9px; font-size: 10px; font-weight: 700; letter-spacing: .5px; }
+    .app .person { font-size: 11px; font-weight: 700; color: var(--deep); }
+    .app .pv { margin: 12px 0 0 18px; }
+    .app .pill { background: #D6E04A; border-radius: 99px; padding: 8px 14px; font-size: 11px; font-weight: 700; letter-spacing: 1px; }
+    .app .rcard, .app .ccard, .app .acard { border-radius: 22px; padding: 18px 20px; margin-bottom: 10px; }
+    .app .rk { display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; }
+    .app .rk span:first-child { display: flex; align-items: center; gap: 6px; }
+    .app .rt { font-size: 18px; font-weight: 600; line-height: 25px; margin-top: 10px; }
+    .app .rn { font-size: 13px; line-height: 19px; margin-top: 8px; opacity: .8; }
+    .app .chk { width: 24px; height: 24px; border-radius: 50%; border: 2px solid currentColor; display: grid; place-items: center; font-size: 13px; color: var(--ink); background: var(--paper); }
+    .app .pal { display: flex; align-items: center; gap: 16px; padding: 9px 0; border-bottom: 1.5px solid #15212B14; font-size: 18px; font-weight: 600; }
+    .app .pal i { display: flex; width: 76px; height: 34px; border: 2.5px solid var(--ink); border-radius: 17px; overflow: hidden; flex: none; }
+    .app .pal i b { flex: 1; }
+    .app .pal em { margin-left: auto; width: 26px; height: 26px; border-radius: 50%; background: var(--ink); color: #fff; font-style: normal; font-size: 14px; display: grid; place-items: center; }
+    .app .avs { display: flex; }
+    .app .avs span { width: 32px; height: 32px; border-radius: 50%; background: var(--ink); color: #D6E04A; font-size: 11px; font-weight: 700; display: grid; place-items: center; margin-left: -8px; border: 2px solid var(--paper); }
+    .app .avs span:first-child { margin-left: 0; }
+    .app .sbtn { background: var(--primary); color: #fff; border-radius: 12px; padding: 9px 11px; font-size: 11px; font-weight: 700; letter-spacing: 1px; }
+    .app .sbtn.ghost { background: none; border: 1.5px solid var(--ink); color: var(--ink); }
+    .app .amen { display: flex; align-items: center; gap: 10px; margin-top: 14px; font-size: 12px; font-weight: 600; opacity: .85; }
+    .app .ab { background: var(--ink); color: #D6E04A; border-radius: 10px; padding: 6px 12px; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; }
+    .app .steps { display: flex; gap: 8px; }
+    .app .steps span { flex: 1; height: 38px; border-radius: 12px; border: 2px solid #15212B24; display: grid; place-items: center; font-family: 'Anton', sans-serif; font-size: 18px; color: var(--soft); }
+    .app .steps .done { background: #B7C9D2; border-color: #B7C9D2; color: var(--ink); }
+    .app .steps .on { background: var(--primary); border-color: var(--primary); color: #fff; }
+    .app .icard { display: flex; gap: 12px; align-items: flex-start; border: 1.5px solid #15212B2E; border-radius: 14px; padding: 12px 14px; margin-bottom: 8px; }
+    .app .tick { width: 22px; height: 22px; border-radius: 7px; background: var(--primary); color: #fff; font-size: 12px; display: grid; place-items: center; flex: none; }
+    .app .it { font-size: 15px; font-weight: 600; line-height: 21px; }
+    .app .dim { position: absolute; inset: 0; background: rgba(15,12,25,.45); }
+    .app .sheet { position: absolute; left: 0; right: 0; bottom: 0; top: 230px; background: var(--paper); border-radius: 28px 28px 0 0; padding: 0 24px; }
+    .app .grab { width: 42px; height: 5px; border-radius: 99px; background: #15212B33; margin: 12px auto 18px; }
+    .app .caret { display: inline-block; width: 2px; height: 18px; background: var(--primary); vertical-align: -3px; margin-left: 2px; animation: fx-blink 1s steps(1) infinite; }
+    @keyframes fx-blink { 50% { opacity: 0; } }
+    .app .listen { display: inline-flex; align-items: center; gap: 10px; background: var(--ink); color: #fff; border-radius: 21px; height: 42px; padding: 0 14px; font-size: 13px; font-weight: 700; margin-top: 12px; }
+    .app .listen .rec { width: 10px; height: 10px; border-radius: 5px; background: #FF5A5F; }
+    .app .listen .bars { display: flex; align-items: center; gap: 3px; height: 22px; }
+    .app .listen .bars i { width: 3px; border-radius: 2px; background: #D6E04A; animation: fx-bar 0.9s ease-in-out infinite; }
+    .app .listen .bars i:nth-child(odd) { animation-delay: -.4s; } .app .listen .bars i:nth-child(3n) { animation-delay: -.7s; }
+    @keyframes fx-bar { 0%, 100% { height: 5px; } 50% { height: 20px; } }
+    .app .tabs { position: absolute; left: 0; right: 0; bottom: 0; height: 84px; border-top: 1px solid #15212B14; background: var(--paper); display: flex; justify-content: space-around; padding-top: 10px; }
+    .app .tabs div { display: flex; flex-direction: column; align-items: center; gap: 5px; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; color: var(--soft); }
+    .app .tabs div.on { color: var(--primary); }
+
+
+    /* Phones: the phone at the top, the highlighted feature's words still underneath */
+    @media (max-width: 820px) {
+      .fl-pin { grid-template-columns: 1fr; grid-template-rows: auto auto; align-content: center; gap: 28px; padding: 0 24px; justify-items: center; }
+      .fl-side { order: -1; }
+      .fl-list { position: relative; width: 100%; height: 150px; display: block; }
+      .fl-item { position: absolute; inset: 0; opacity: 0; border: 0; padding: 0; text-align: center; pointer-events: none; transition: opacity .35s ease; }
+      .fl-item.on { opacity: 1; }
+      .fl-item .feature-label { display: block; margin-bottom: 8px; }
+      .fl-item .feature-title { font-size: 28px; }
+      .fl-item .feature-body { max-height: none; opacity: 1; margin: 10px auto 0; font-size: 15px; max-width: 420px; }
+      .fl-dots { display: flex; gap: 7px; justify-content: center; }
+      .fl-dots i { width: 6px; height: 6px; border-radius: 50%; background: rgba(251,251,250,0.3); transition: background .3s; }
+      .fl-dots i.on { background: var(--citron); }
+    }
+
+    /* Reduced motion: just the list, no phone */
+    .fl.fl-static .fl-pin { position: static; height: auto; display: block; padding: 64px 48px; }
+    .fl.fl-static .fl-side, .fl.fl-static .fl-dots { display: none; }
+    .fl.fl-static .fl-list { position: static; height: auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 40px; }
+    .fl.fl-static .fl-item { position: static; opacity: 1; border: 0; padding: 0; pointer-events: auto; text-align: left; }
+    .fl.fl-static .fl-item .feature-label { display: block; }
+    .fl.fl-static .fl-item .feature-body { max-height: none; opacity: 1; margin-top: 10px; }
   </style>
 </head>
 <body>
@@ -532,49 +678,231 @@
       </div>
     </div>
 
-    <div class="hero-right">
-      <div class="phone-wrap">
-        <div class="phone-frame">
-          <div class="phone-notch"></div>
-          <img class="phone-screen" src="screenshot.png" alt="Selara app screenshot" />
+  </section>
+
+  <!-- ── Features: pinned. A list beside a phone; scrolling moves the highlight and the phone shows that feature ── -->
+  <section class="features fl" id="features">
+    <div class="fl-pin">
+      <ol class="fl-list">
+        <li class="fl-item">
+          <span class="feature-label">Pray</span>
+          <h3 class="feature-title">Bring everything.</h3>
+          <p class="feature-body">Log prayer requests by category — family, health, guidance, gratitude, and more. Add notes, scripture, and who you're praying for.</p>
+        </li>
+        <li class="fl-item">
+          <span class="feature-label">AI-assisted</span>
+          <h3 class="feature-title">Just speak it.</h3>
+          <p class="feature-body">Dictate your prayers out loud and let Selara's AI shape them into a journal entry — your words, your heart, no typing required.</p>
+        </li>
+        <li class="fl-item">
+          <span class="feature-label">Journal</span>
+          <h3 class="feature-title">Reflect deeply.</h3>
+          <p class="feature-body">Speak your heart and let Selara help you shape it into a journal entry. Your words, your prayers, your story with God.</p>
+        </li>
+        <li class="fl-item">
+          <span class="feature-label">Guided</span>
+          <h3 class="feature-title">Pray with a guide.</h3>
+          <p class="feature-body">Not sure where to start? Walk through Adoration, Confession, Thanksgiving and Supplication, one step at a time.</p>
+        </li>
+        <li class="fl-item">
+          <span class="feature-label">Remember</span>
+          <h3 class="feature-title">See what He's done.</h3>
+          <p class="feature-body">Mark prayers as answered and look back on what God has done. Faith grows when you remember.</p>
+        </li>
+        <li class="fl-item">
+          <span class="feature-label">Answered</span>
+          <h3 class="feature-title">Notice the answers.</h3>
+          <p class="feature-body">Share good news and Selara finds the prayers it answers, so you can mark them answered and remember.</p>
+        </li>
+        <li class="fl-item">
+          <span class="feature-label">Circles</span>
+          <h3 class="feature-title">Pray together.</h3>
+          <p class="feature-body">Create a Circle to pray alongside friends, family, or your small group. Share requests and carry each other's burdens.</p>
+        </li>
+        <li class="fl-item">
+          <span class="feature-label">Small group</span>
+          <h3 class="feature-title">Bring the whole list.</h3>
+          <p class="feature-body">Paste the requests and praises you wrote down at small group. Selara splits them up for your Circle, and you review them before they post.</p>
+        </li>
+        <li class="fl-item">
+          <span class="feature-label">Make it yours</span>
+          <h3 class="feature-title">Pick your palette.</h3>
+          <p class="feature-body">Choose from nine color themes to dress Selara in a palette that fits your personality. Your journal, your look.</p>
+        </li>
+      </ol>
+      <div class="fl-side">
+        <div class="dev-wrap" aria-hidden="true">
+          <div class="dev">
+            <div class="dev-back"></div>
+            <i class="dev-btn b1"></i><i class="dev-btn b2"></i><i class="dev-btn b3"></i><i class="dev-btn b4"></i><i class="dev-btn b5"></i>
+            <div class="dev-rim"><div class="dev-bezel"><div class="dev-screen">
+          <div class="app">
+
+          <!-- Today (where it starts, same as the hero) -->
+          <div class="scr">
+            <div class="pad" style="padding-top:84px">
+              <div class="logo">SELARA <svg width="22" height="22" style="color:var(--primary)"><use href="#fx-star"/></svg></div>
+              <div class="kick" style="margin-top:34px">SELAH. BE STILL.</div>
+              <div class="hl">HELLO,<br>HANNAH<b>.</b></div>
+              <div class="vcard"><div class="kick" style="color:#15212B99">TODAY'S VERSE</div><div class="vt" style="font-size:18px;margin:14px 0 12px">The LORD is my shepherd; I shall not want.</div><div class="anton" style="color:var(--primary);font-size:17px">PSALM 23:1</div></div>
+              <div class="rowlab"><span>ONGOING PRAYERS</span><span>10</span></div>
+              <div style="display:flex;gap:10px">
+                <div class="mcard"><div class="kick">HEALTH</div><div class="mt">Pray for Emma. Her anxiety has been crushing lately.</div><div class="for">for Emma</div></div>
+                <div class="mcard"><div class="kick">FAITH</div><div class="mt">Help me stay consistent in prayer.</div></div>
+              </div>
+              <div class="bigbtn">START AN ENTRY <span>→</span></div>
+            </div>
+            <div class="tabs" data-on="0"></div>
+          </div>
+
+          <!-- 01 Pray: add a prayer -->
+          <div class="scr">
+            <div class="pad" style="padding-top:70px">
+              <div class="hl" style="font-size:40px;line-height:44px">ADD A<br>PRAYER<b>.</b></div>
+              <div class="field" style="height:104px">Healing for Mom's knee. Surgery is Friday morning.</div>
+              <div class="lab">CATEGORY</div>
+              <div class="chips"><span>Family</span><span class="on">Health</span><span>Work</span><span>Faith</span><span>Friends</span><span>Gratitude</span></div>
+              <div class="lab">WHO IS IT FOR?</div>
+              <div class="chips"><span class="on">Mom</span><span>Dad</span><span>Maya</span><span>+ Add</span></div>
+              <div class="lab">SCRIPTURE</div>
+              <div class="field" style="height:auto"><div class="ref">ISAIAH 41:10</div><div class="vt" style="font-size:15px;line-height:22px">Fear not, for I am with you; be not dismayed, for I am your God.</div></div>
+              <div class="toggle"><span>Keep praying for this</span><i></i></div>
+              <div class="bigbtn" style="justify-content:center;margin-top:16px">SAVE PRAYER</div>
+            </div>
+          </div>
+
+          <!-- AI-assisted: Pray freely + dictation -->
+          <div class="scr">
+            <div class="pad" style="padding-top:70px;opacity:.35">
+              <div class="hl" style="font-size:44px;line-height:48px">NOVEMBER 19,<br>2026<b>.</b></div>
+            </div>
+            <div class="dim"></div>
+            <div class="sheet">
+              <div class="grab"></div>
+              <div class="hl" style="font-size:30px;line-height:40px">PRAY FREELY<b>.</b></div>
+              <div class="body" style="color:var(--soft);margin:4px 0 14px">Just talk to God — type or dictate everything on your heart. We'll sort it into individual prayers.</div>
+              <div class="field" style="height:170px">Lord, thank you that my sister's scan came back clear. I'm nervous about my interview Friday, help me trust you with it. And please be with my friend Maya<span class="caret"></span></div>
+              <div class="listen"><i class="rec"></i><span class="bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>0:24</div>
+              <div style="display:flex;gap:10px;margin-top:14px"><div class="obtn">CANCEL</div><div class="bigbtn" style="flex:1;justify-content:center;margin:0">PARSE MY PRAYERS</div></div>
+            </div>
+          </div>
+
+          <!-- Journal: an entry -->
+          <div class="scr">
+            <div class="pad" style="padding-top:70px">
+              <div class="hl" style="font-size:44px;line-height:48px">NOVEMBER 19,<br>2026<b>.</b></div>
+              <div class="lab">REFLECTION</div>
+              <div class="body">I came in anxious about Friday and left lighter. You were already there before I asked.</div>
+              <div class="lab">PRAISES</div>
+              <div class="praise"><svg width="11" height="11"><use href="#fx-star"/></svg>Sister's scan came back clear.</div>
+              <div class="lab">PRAYERS</div>
+              <div class="pcard"><div class="pt"><i></i>Calm my nerves and trust for Friday.</div><div class="meta"><span class="chip">Work</span></div><div class="pv"><div class="ref">PSALM 56:3</div><div class="vt">When I am afraid, I put my trust in you.</div></div></div>
+              <div class="pcard"><div class="pt"><i></i>Comfort Maya in her loneliness.</div><div class="meta"><span class="chip">Friends</span><span class="person">Maya</span></div></div>
+            </div>
+            <div class="tabs" data-on="1"></div>
+          </div>
+
+          <!-- Guided: ACTS -->
+          <div class="scr">
+            <div class="pad" style="padding-top:70px">
+              <div class="steps"><span class="done">A</span><span class="done">C</span><span class="on">T</span><span>S</span></div>
+              <div class="kick" style="color:var(--deep);margin-top:22px">STEP 3 OF 4</div>
+              <div class="hl" style="font-size:40px;line-height:44px">THANKS&shy;GIVING<b>.</b></div>
+              <div class="body" style="color:var(--soft);margin:8px 0 16px">What has He done, given, or allowed recently that you're grateful for?</div>
+              <div class="field" style="height:150px">For the way my sister's news came back. For Sunday dinner with everyone at the table. For a quiet morning.<span class="caret"></span></div>
+              <div class="bigbtn" style="justify-content:center">NEXT: SUPPLICATION <span>→</span></div>
+              <div class="body" style="text-align:center;color:var(--soft);font-size:13px;margin-top:14px">Skip this step</div>
+            </div>
+          </div>
+
+          <!-- 03 Remember -->
+          <div class="scr">
+            <div class="pad" style="padding-top:78px">
+              <div style="display:flex;justify-content:space-between;align-items:center"><div class="kick" style="color:var(--deep);font-size:13px;letter-spacing:4px">REMEMBER *</div><div class="pill">+ SHARE A PRAISE</div></div>
+              <div class="hl" style="font-size:44px;line-height:48px;margin-top:18px">LOOK WHAT<br>HE'S DONE<b>.</b></div>
+              <div class="body" style="color:var(--soft);margin:10px 0 18px">A record of His faithfulness — kept to be remembered and encouraged.</div>
+              <div class="rcard" style="background:#D6E04A"><div class="rk"><span><svg width="10" height="10"><use href="#fx-star"/></svg> PRAISE REPORT</span><span style="opacity:.5">NOV 19</span></div><div class="rt">Sister's scan came back clear.</div></div>
+              <div class="rcard" style="background:#2E6F8E;color:#fff"><div class="rk"><span>ANSWERED · FRIENDS</span><span style="opacity:.6">JUN 12</span></div><div class="rt">Community for Maya</div><div class="rn">"She found a small group she loves." Prayed for 101 days.</div></div>
+              <div class="rcard" style="background:#B7C9D2"><div class="rk"><span>ANSWERED · WORK</span><span style="opacity:.5">MAR 4</span></div><div class="rt">A job that fits our family</div></div>
+            </div>
+            <div class="tabs" data-on="3"></div>
+          </div>
+
+          <!-- Answered: the praise matched a prayer -->
+          <div class="scr">
+            <div class="pad" style="padding-top:78px">
+              <div class="kick" style="color:var(--primary);display:flex;align-items:center;gap:8px"><svg width="13" height="13"><use href="#fx-star"/></svg>SELARA</div>
+              <div class="hl" style="font-size:48px;line-height:50px;margin-top:12px;color:var(--primary)">PRAYERS</div>
+              <div class="hl" style="font-size:48px;line-height:50px;margin-top:-4px">ANSWERED<b style="color:var(--citron)">.</b></div>
+              <div class="body" style="color:var(--soft);margin:8px 0 6px">Look what He has done. These prayers align with your praise.</div>
+              <div class="body" style="color:var(--soft);font-size:12px;margin-bottom:14px">Tap to deselect any that don't apply.</div>
+              <div class="acard" style="background:var(--primary);color:var(--paper)"><div class="rk" style="color:var(--citron)"><span>FRIENDS · MAYA</span><span class="chk" style="border-color:var(--citron);background:var(--citron)">✓</span></div><div class="rt anton" style="font-size:22px;line-height:28px">COMMUNITY FOR MAYA</div></div>
+              <div class="acard" style="background:#15212B0D"><div class="rk" style="color:var(--soft)"><span>FRIENDS · MAYA</span><span class="chk">✓</span></div><div class="rt anton" style="font-size:22px;line-height:28px">COMFORT MAYA IN HER LONELINESS</div></div>
+              <div class="bigbtn" style="background:var(--citron);color:var(--ink);justify-content:center;font-size:18px">YES — MARK 2 AS ANSWERED</div>
+              <div class="body" style="text-align:center;color:var(--soft);font-size:12px;font-weight:700;letter-spacing:1.5px;margin-top:14px">JUST A PRAISE — KEEP PRAYING</div>
+            </div>
+          </div>
+
+          <!-- Circles: a circle -->
+          <div class="scr">
+            <div class="pad" style="padding-top:78px">
+              <div class="kick" style="color:var(--deep)">‹ CIRCLES</div>
+              <div class="hl" style="font-size:42px;line-height:46px;margin-top:10px">PRAYER<br>PARTNERS<b>.</b></div>
+              <div style="display:flex;align-items:center;gap:10px;margin:12px 0 16px"><div class="avs"><span>HS</span><span>AH</span><span style="background:#2E6F8E;color:#fff">MJ</span></div><span class="body" style="color:var(--soft);font-size:13px">3 members · 19 requests</span></div>
+              <div style="display:flex;gap:8px;margin-bottom:16px"><div class="sbtn">+ REQUEST</div><div class="sbtn">+ PRAISE</div><div class="sbtn ghost">IMPORT A LIST</div></div>
+              <div class="ccard" style="background:#D6E04A"><div class="rk"><span>FROM ANNA · HEALTH</span><span style="opacity:.5">2H</span></div><div class="rt">Wisdom for our move, and peace for the kids.</div><div class="amen"><span class="ab">AMEN</span><span>Hannah and 2 others prayed</span></div></div>
+              <div class="ccard" style="background:#2E6F8E;color:#fff"><div class="rk"><span>FROM MARCUS · WORK</span><span style="opacity:.6">1D</span></div><div class="rt">Interview on Thursday. Pray for calm.</div><div class="amen"><span class="ab" style="background:#D6E04A;color:#15212B">AMEN</span><span>You prayed</span></div></div>
+            </div>
+            <div class="tabs" data-on="2"></div>
+          </div>
+
+          <!-- Small group: import a list -->
+          <div class="scr">
+            <div class="pad" style="padding-top:70px">
+              <div class="hl" style="font-size:36px;line-height:42px">IMPORT A LIST<b>.</b></div>
+              <div class="body" style="color:var(--soft);margin:6px 0 12px">We split your note by line. Tap any text to edit it before you post.</div>
+              <div class="field" style="height:auto;font-size:14px;line-height:21px;white-space:pre-line">Sarah - her mom's surgery Tuesday
+Marcus - interview Thursday
+Praise! Jess got the apartment</div>
+              <div class="lab">WILL POST TO PRAYER PARTNERS</div>
+              <div class="icard"><span class="tick">✓</span><div><div class="it">Her mom's surgery Tuesday</div><div class="meta" style="margin:6px 0 0"><span class="chip">Health</span><span class="person">for Sarah</span></div></div></div>
+              <div class="icard"><span class="tick">✓</span><div><div class="it">Interview Thursday</div><div class="meta" style="margin:6px 0 0"><span class="chip">Work</span><span class="person">for Marcus</span></div></div></div>
+              <div class="icard" style="background:#D6E04A40"><span class="tick">✓</span><div><div class="it">Jess got the apartment</div><div class="meta" style="margin:6px 0 0"><span class="chip" style="background:var(--ink);color:var(--citron)">Praise</span></div></div></div>
+              <div class="bigbtn" style="justify-content:center;margin-top:12px">SAVE PRAYERS</div>
+            </div>
+          </div>
+
+          <!-- Make it yours: palettes -->
+          <div class="scr">
+            <div class="pad" style="padding-top:70px">
+              <div class="hl" style="font-size:40px;line-height:44px">PICK A<br>MOOD<b>.</b></div>
+              <div class="body" style="color:var(--soft);margin:6px 0 10px">Dress Selara in a palette you love.</div>
+              <div class="pal on"><i><b style="background:#2E6F8E"></b><b style="background:#D6E04A"></b><b style="background:#B7C9D2"></b></i>Storm<em>✓</em></div>
+              <div class="pal"><i><b style="background:#2D43E8"></b><b style="background:#C9E84A"></b><b style="background:#C7B4F0"></b></i>Electric</div>
+              <div class="pal"><i><b style="background:#F0492A"></b><b style="background:#F3C648"></b><b style="background:#F0C6BD"></b></i>Sunbaked</div>
+              <div class="pal"><i><b style="background:#E22D7A"></b><b style="background:#FF8A3D"></b><b style="background:#8FD0E0"></b></i>Punch</div>
+              <div class="pal"><i><b style="background:#6D3BD6"></b><b style="background:#E7DE3C"></b><b style="background:#F58A7B"></b></i>Grape Soda</div>
+              <div class="pal"><i><b style="background:#F23E97"></b><b style="background:#FFB3D6"></b><b style="background:#E3C6F5"></b></i>Bubblegum</div>
+              <div class="pal"><i><b style="background:#4472A8"></b><b style="background:#B2C9B0"></b><b style="background:#C2D3DF"></b></i>Hamptons</div>
+              <div class="pal"><i><b style="background:#4E7466"></b><b style="background:#E6D8A3"></b><b style="background:#C8D5D8"></b></i>Sage</div>
+              <div class="pal"><i><b style="background:#7B5A80"></b><b style="background:#EBC7B5"></b><b style="background:#C9D3C0"></b></i>Heather</div>
+            </div>
+            <div class="tabs" data-on="4"></div>
+          </div>
+        </div>
+              <div class="dev-glare"></div>
+            </div></div></div>
+          </div>
         </div>
       </div>
+      <div class="fl-dots" aria-hidden="true"></div>
     </div>
   </section>
 
-  <!-- ── Features ── -->
-  <section class="features" id="features">
-    <div class="feature-item">
-      <span class="feature-label">Pray</span>
-      <h3 class="feature-title">Bring everything.</h3>
-      <p class="feature-body">Log prayer requests by category — family, health, guidance, gratitude, and more. Add notes, scripture, and who you're praying for.</p>
-    </div>
-    <div class="feature-item">
-      <span class="feature-label">Journal</span>
-      <h3 class="feature-title">Reflect deeply.</h3>
-      <p class="feature-body">Speak your heart and let Selara help you shape it into a journal entry. Your words, your prayers, your story with God.</p>
-    </div>
-    <div class="feature-item">
-      <span class="feature-label">Remember</span>
-      <h3 class="feature-title">See what He's done.</h3>
-      <p class="feature-body">Mark prayers as answered and look back on what God has done. Faith grows when you remember.</p>
-    </div>
-    <div class="feature-item">
-      <span class="feature-label">Make it yours</span>
-      <h3 class="feature-title">Pick your palette.</h3>
-      <p class="feature-body">Choose from six color themes to dress Selara in a palette that fits your personality. Your journal, your look.</p>
-    </div>
-    <div class="feature-item">
-      <span class="feature-label">Circles</span>
-      <h3 class="feature-title">Pray together.</h3>
-      <p class="feature-body">Create a Circle to pray alongside friends, family, or your small group. Share requests and carry each other's burdens.</p>
-    </div>
-    <div class="feature-item">
-      <span class="feature-label">AI-assisted</span>
-      <h3 class="feature-title">Just speak it.</h3>
-      <p class="feature-body">Dictate your prayers out loud and let Selara's AI shape them into a journal entry — your words, your heart, no typing required.</p>
-    </div>
-  </section>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+    <symbol id="fx-star" viewBox="0 0 200 200"><g fill="none" stroke="currentColor" stroke-width="22" stroke-linecap="round"><path d="M100 28 V172"/><path d="M37 64 L163 136"/><path d="M163 64 L37 136"/></g></symbol>
+  </defs></svg>
+
 
   <!-- ── Footer ── -->
   <footer>
@@ -682,6 +1010,74 @@
         if (t >= END) { finish(); return; }
         requestAnimationFrame(frame);
       }
+    })();
+  </script>
+  <script>
+    /* Features: the section pins; scrolling moves the highlight down the list and the phone shows that feature */
+    (function () {
+      var sec = document.getElementById('features');
+      if (!sec) return;
+      if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) { sec.classList.add('fl-static'); return; }
+      var items = [].slice.call(sec.querySelectorAll('.fl-item'));
+      var dev = sec.querySelector('.dev'), app = sec.querySelector('.app');
+      var scrs = [].slice.call(app.querySelectorAll('.scr')); // [0] = Today, then one per feature
+      var N = items.length, H, START = -0.5, END_HOLD = 0.35;
+      function clamp(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+      function smooth(u) { u = clamp(u); return u * u * (3 - 2 * u); }
+
+      // Status bar on every screen and the tab bars.
+      var TABS = [['TODAY', 'M3 11l9-7 9 7v9h-6v-6H9v6H3z'], ['JOURNAL', 'M6 3h12v18H6zM9 8h6M9 12h6'], ['CIRCLES', 'M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M16 5a3 3 0 0 1 0 6M18 14c2 .8 3 3 3 6'], ['REMEMBER', 'M6 3h12v18l-6-4-6 4z'], ['PROFILE', 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21c0-4.4 3.6-8 8-8s8 3.6 8 8']];
+      app.querySelectorAll('.tabs').forEach(function (t) {
+        var on = +t.dataset.on;
+        t.innerHTML = TABS.map(function (x, i) {
+          return '<div class="' + (i === on ? 'on' : '') + '"><svg width="26" height="26" viewBox="0 0 24 24" fill="' + (i === on ? 'currentColor' : 'none') + '" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="' + x[1] + '"/></svg>' + x[0] + '</div>';
+        }).join('');
+      });
+      var chrome = document.createElement('div');
+      chrome.className = 'chrome';
+      chrome.innerHTML = '<div class="time">9:41</div><div class="island"></div><div class="icons"><svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#15212B"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#15212B"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#15212B"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#15212B"/></svg><svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.5" fill="none" stroke="#15212B" opacity=".4"/><rect x="2" y="2" width="20" height="9" rx="2" fill="#15212B"/></svg></div>';
+      app.appendChild(chrome);
+      var dots = sec.querySelector('.fl-dots');
+      dots.innerHTML = items.map(function () { return '<i></i>'; }).join('');
+      dots = [].slice.call(dots.children);
+
+      function layout() {
+        H = innerHeight;
+        var mobile = innerWidth <= 820;
+        // screen width in px; everything about the device scales from it, like a real phone
+        var sw = mobile ? Math.min(220, (H - 300) * 402 / 875) : Math.min(300, (H - 120) * 402 / 875);
+        var s = sw / 402;
+        var st = dev.style;
+        st.setProperty('--sw', sw + 'px'); st.setProperty('--sh', (875 * s) + 'px');
+        st.setProperty('--bez', (9 * s) + 'px'); st.setProperty('--rim', Math.max(2, 3.2 * s) + 'px');
+        st.setProperty('--r2', (55 * s) + 'px'); st.setProperty('--r1', (64 * s) + 'px'); st.setProperty('--r0', (64 * s + Math.max(2, 3.2 * s)) + 'px');
+        app.style.transform = 'scale(' + s + ')';
+        sec.style.height = (H * (1 + (N - START + END_HOLD) * 0.55)) + 'px';
+        update();
+      }
+      function progress() {
+        var r = sec.getBoundingClientRect();
+        var raw = clamp(-r.top / (r.height - H));
+        return Math.min(N - 1, START + raw * (N - 1 - START + END_HOLD));
+      }
+      function update() {
+        var p = progress();
+        var active = Math.max(0, Math.min(N - 1, Math.round(p)));
+        items.forEach(function (it, i) { it.classList.toggle('on', i === active); });
+        // the phone crossfades to the highlighted feature's screen; nothing moves with the scroll
+        scrs.forEach(function (sc, k) { sc.classList.toggle('on', k === active + 1); });
+        dots.forEach(function (d, i) { d.classList.toggle('on', i === active); });
+      }
+      items.forEach(function (it, i) {
+        it.addEventListener('click', function () {
+          var raw = (i - START) / (N - 1 - START + END_HOLD);
+          scrollTo({ top: sec.offsetTop + raw * (sec.offsetHeight - H), behavior: 'smooth' });
+        });
+      });
+      var ticking = false;
+      addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(function () { ticking = false; update(); }); } }, { passive: true });
+      addEventListener('resize', layout);
+      layout();
     })();
   </script>
 </body>
