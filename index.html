@@ -19,12 +19,18 @@
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
   <script>
-    /* Intro: once per visit (add ?intro to replay), skipped for reduced motion */
+    /* Intro: plays on every fresh load and reload (add ?intro to force it).
+       Skipped when coming back from another Selara page (Back, or a link from
+       privacy/support/terms) and for reduced motion. */
     (function () {
-      var d = document.documentElement, force = location.search.indexOf('intro') !== -1, seen = false;
-      try { seen = sessionStorage.getItem('selara-intro') === '1'; } catch (e) {}
+      var d = document.documentElement, force = location.search.indexOf('intro') !== -1;
+      var nav = null, internal = false;
+      try { nav = performance.getEntriesByType('navigation')[0]; } catch (e) {}
+      var type = nav ? nav.type : 'navigate';
+      try { internal = !!document.referrer && new URL(document.referrer).origin === location.origin; } catch (e) {}
+      var skip = type === 'back_forward' || (type === 'navigate' && internal);
       var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (force || (!seen && !still)) {
+      if (force || (!skip && !still)) {
         d.classList.add('intro');
         window.__introFailsafe = setTimeout(function () { d.classList.remove('intro', 'intro-out'); }, 8000);
       }
@@ -652,7 +658,6 @@
       function finish() {
         if (done) return;
         done = true;
-        try { sessionStorage.setItem('selara-intro', '1'); } catch (e) {}
         root.classList.add('intro-out');
         setTimeout(function () {
           root.classList.remove('intro', 'intro-out');
