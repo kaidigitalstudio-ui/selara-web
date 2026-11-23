@@ -32,6 +32,10 @@
       var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (force || (!skip && !still)) {
         d.classList.add('intro');
+        // The intro plays from the top of the page: on a reload, don't let the browser
+        // jump back down to where you were (the line would land off-screen).
+        if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+        window.scrollTo(0, 0);
         window.__introFailsafe = setTimeout(function () { d.classList.remove('intro', 'intro-out'); }, 8000);
       }
     })();
